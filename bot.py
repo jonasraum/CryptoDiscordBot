@@ -3,8 +3,10 @@ from discord.ext import commands
 import cogs.data as data, cogs.graph as graph
 
 
+
 bot = commands.Bot(command_prefix = '!')
-client_token = os.environ['TOKEN']
+bot_token = os.environ['Discord Bot TOKEN']
+
 COGS = [data.Data, graph.Graph]
 
 @bot.event
@@ -17,5 +19,5 @@ def add_cogs(bot):
 
 def run():
   add_cogs(bot)
-  bot.run(client_token)
+  bot.run(bot_token)
 
