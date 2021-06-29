@@ -12,20 +12,20 @@ class Data(commands.Cog):
   def generate_trend_string(self, trend):
         if trend >= 1:
           trend_string = f'''
-          ``css
+          ```css
           {trend}%
           ```
           '''
           return trend_string
         elif trend < -1:
           trend_string = f'''
-          ``diff
+          ```
           {trend}%
           ```
           '''
           return trend_string
         else:
-          return f'{trend}%'
+          return f'> {trend}%'
 
   @commands.command(name="price", aliases=['p'])
   async def fetch_price(self, ctx):
@@ -52,29 +52,30 @@ class Data(commands.Cog):
       data = json.loads(response.text)
 
       name = data['data'][str.upper(symbol)]['name']
+      slug = data['data'][str.upper(symbol)]['slug']
+
+      print(name)
 
       trend_1h = round(data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['percent_change_1h'], 2)
       trend_24h = round(data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['percent_change_24h'], 2)
       trend_7d = round(data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['percent_change_7d'], 2)
       trend_30d = round(data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['percent_change_30d'], 2)
+      trend_60d = round(data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['percent_change_60d'], 2)
       trend_90d = round(data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['percent_change_90d'], 2)
 
       last_updated = data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['last_updated']
 
       price = Money(amount = data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['price'], currency = str.upper(currency))
 
-      #### Create the initial embed object ####
-      embed=discord.Embed(title=f"{name} Overview", url="https://realdrewdata.medium.com/", description="This is an embed that will show how to build an embed and the different components", color=0x109319)
 
-      # Add author, thumbnail, fields, and footer to the embed
-      #embed.set_author(name="Crypto Bot", url="https://twitter.com/RealDrewData", icon_url="https://cdn.discordapp.com/avatars/856799677751885835/64a0cc5b3b99b999c1b7acd08e1a502b.webp?size=128")
-
-      embed.add_field(name="Field 1 Title", value="This is the value for field 1. This is NOT an inline field.", inline=False)
-      embed.add_field(name="1h Trend", value=f"{self.generate_trend_string(trend_1h)}", inline=True)
-      embed.add_field(name="24h Trend", value=f"{self.generate_trend_string(trend_24h)}", inline=True)
-      embed.add_field(name="7d Trend", value=f"{self.generate_trend_string(trend_7d)}", inline=True)
-      embed.add_field(name="30d Trend", value=f"{self.generate_trend_string(trend_30d)}", inline=True)
-      embed.add_field(name="90d Trend", value=f"{self.generate_trend_string(trend_90d)}", inline=True)
+      embed=discord.Embed(title=f"{name} Overview", url=f"https://coinmarketcap.com/currencies/{slug}/", color=0x1289EA)
+      
+      embed.add_field(name="1h Trend", value=f"{trend_1h}%", inline=True)
+      embed.add_field(name="24h Trend", value=f"{trend_24h}%", inline=True)
+      embed.add_field(name="7d Trend", value=f"{trend_7d}%", inline=True)
+      embed.add_field(name="30d Trend", value=f"{trend_30d}%", inline=True)
+      embed.add_field(name="30d Trend", value=f"{trend_60d}%", inline=True)
+      embed.add_field(name="90d Trend", value=f"{trend_90d}%", inline=True)
 
       embed.set_footer(text=f"This Bot does not deliver real time data, because the used API is not updating exactly to the second. Last update was at {last_updated}")
 
