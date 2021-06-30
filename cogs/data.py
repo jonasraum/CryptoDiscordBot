@@ -67,8 +67,6 @@ class Data(commands.Cog):
 
       embed.add_field(name="Price", value=f"{price}\n\u200b", inline=False)
 
-      #embed.add_field(name="\u200b", value="\u200b", inline=False)
-
       embed.add_field(name="1h Trend", value=f"{trend_1h}%", inline=True)
       embed.add_field(name="24h Trend", value=f"{trend_24h}%", inline=True)
       embed.add_field(name="7d Trend", value=f"{trend_7d}%", inline=True)
