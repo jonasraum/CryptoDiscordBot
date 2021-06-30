@@ -70,7 +70,7 @@ class Data(commands.Cog):
       embed.add_field(name="24h Trend", value=f"{trend_24h}%", inline=True)
       embed.add_field(name="7d Trend", value=f"{trend_7d}%", inline=True)
       embed.add_field(name="30d Trend", value=f"{trend_30d}%", inline=True)
-      embed.add_field(name="30d Trend", value=f"{trend_60d}%", inline=True)
+      embed.add_field(name="60d Trend", value=f"{trend_60d}%", inline=True)
       embed.add_field(name="90d Trend", value=f"{trend_90d}%\n\u200b", inline=True)
 
       embed.set_footer(text=f"This Bot does not deliver real time data, because the used API is not updating exactly to the second. Last update was at {last_updated[11:19]} UTC")
