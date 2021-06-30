@@ -1,8 +1,11 @@
-from discord.ext import commands
-import pandas_datareader as pandas
-import matplotlib.pyplot as plt
 import datetime as dt
+
 import discord
+import matplotlib.pyplot as plt
+import os
+import pandas_datareader as pandas
+from discord.ext import commands
+
 
 class Graph(commands.Cog):
 
@@ -24,6 +27,8 @@ class Graph(commands.Cog):
       plt.clf()
 
       await ctx.channel.send(file=discord.File('plot.png'))
+
+      os.remove("plot.png")
     except:
       await ctx.channel.send("Your current request couldn't be processed. Check the valid syntax via `/help` or try again later.")
 

@@ -59,7 +59,6 @@ class Data(commands.Cog):
 
       price = Money(amount = data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['price'], currency = str.upper(currency))
 
-
       embed=discord.Embed(title=f"{name} Overview", url=f"https://coinmarketcap.com/currencies/{slug}/", color=0x1289EA)
 
       thumbnail_url = f"https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@07fd63a0b662ed99c8ad870ee9227b8ef5e11630/32/color/{symbol}.png"
@@ -81,6 +80,16 @@ class Data(commands.Cog):
 
     except:
       await ctx.channel.send("Your current request couldn't be processed. Check the valid syntax via `/help` or try again later.")
+
+  @commands.command(aliases=['h'])
+  async def help(self, ctx):
+    embed = discord.Embed(title="Crypto Bot Help", description="This bot provides several commands revolving around getting data of cryptocurrencies. All commands and their syntax are explained below.\n\u200b", color=0x1289EA)
+
+    embed.add_field(name="overview (ov)", value="Provides the price and trend of the selected currency.\n`!overview symbol [currency = EUR]`\nExample: `!overview btc usd`\n\u200b", inline=False)
+    embed.add_field(name="graph (g)", value="Return a graph showing the trend of the selected currency in a certain time frame.\n`!graph symbol [currency = EUR] [days = 7]`\nExample: `!graph btc usd 100`", inline=False)
+
+    await ctx.channel.send(embed=embed)
+
 
     
     

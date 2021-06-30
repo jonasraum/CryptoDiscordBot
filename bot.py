@@ -4,6 +4,7 @@ import cogs.data as data, cogs.graph as graph
 
 bot = commands.Bot(command_prefix = '!')
 bot_token = os.environ['Discord Bot TOKEN']
+bot.remove_command("help")
 
 COGS = [data.Data, graph.Graph]
 
