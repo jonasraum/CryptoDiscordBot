@@ -2,8 +2,6 @@ import os
 from discord.ext import commands
 import cogs.data as data, cogs.graph as graph
 
-
-
 bot = commands.Bot(command_prefix = '!')
 bot_token = os.environ['Discord Bot TOKEN']
 

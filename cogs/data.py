@@ -83,9 +83,6 @@ class Data(commands.Cog):
 
     except:
       await ctx.channel.send("Your current request couldn't be processed. Check the valid syntax via `/help` or try again later.")
-    
-    #except:
-     # await ctx.channel.send("Your current request couldn't be processed. Check the valid syntax via `/help` or try again later.")
 
     
     
