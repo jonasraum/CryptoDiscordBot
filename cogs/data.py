@@ -1,6 +1,5 @@
 from discord.ext import commands
 from requests import Session
-from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json, os, pprint, discord
 from money import Money
 
@@ -27,15 +26,10 @@ class Data(commands.Cog):
         else:
           return f'> {trend}%'
 
-  @commands.command(name="price", aliases=['p'])
-  async def fetch_price(self, ctx):
-    await ctx.channel.send("Current Price")
-
   @commands.command(aliases=['ov'])
   async def overview(self, ctx, symbol, currency = "EUR"):
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 
-    
     parameters = {
       "symbol": symbol,
       "convert": currency
@@ -54,8 +48,6 @@ class Data(commands.Cog):
       name = data['data'][str.upper(symbol)]['name']
       slug = data['data'][str.upper(symbol)]['slug']
 
-      print(name)
-
       trend_1h = round(data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['percent_change_1h'], 2)
       trend_24h = round(data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['percent_change_24h'], 2)
       trend_7d = round(data['data'][str.upper(symbol)]['quote'][str.upper(currency)]['percent_change_7d'], 2)
@@ -69,23 +61,31 @@ class Data(commands.Cog):
 
 
       embed=discord.Embed(title=f"{name} Overview", url=f"https://coinmarketcap.com/currencies/{slug}/", color=0x1289EA)
-      
+
+      thumbnail_url = f"https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@07fd63a0b662ed99c8ad870ee9227b8ef5e11630/32/color/{symbol}.png"
+      embed.set_thumbnail(url = thumbnail_url)
+
+      embed.add_field(name="Price", value=f"{price}\n\u200b", inline=False)
+
+      #embed.add_field(name="\u200b", value="\u200b", inline=False)
+
       embed.add_field(name="1h Trend", value=f"{trend_1h}%", inline=True)
       embed.add_field(name="24h Trend", value=f"{trend_24h}%", inline=True)
       embed.add_field(name="7d Trend", value=f"{trend_7d}%", inline=True)
       embed.add_field(name="30d Trend", value=f"{trend_30d}%", inline=True)
       embed.add_field(name="30d Trend", value=f"{trend_60d}%", inline=True)
-      embed.add_field(name="90d Trend", value=f"{trend_90d}%", inline=True)
+      embed.add_field(name="90d Trend", value=f"{trend_90d}%\n\u200b", inline=True)
 
-      embed.set_footer(text=f"This Bot does not deliver real time data, because the used API is not updating exactly to the second. Last update was at {last_updated}")
+      embed.set_footer(text=f"This Bot does not deliver real time data, because the used API is not updating exactly to the second. Last update was at {last_updated[11:19]} UTC")
 
       
       await ctx.channel.send(embed=embed)
 
-      pprint.pprint(data)
-
-    except (ConnectionError, Timeout, TooManyRedirects) as e:
-      print(e)
+    except:
+      await ctx.channel.send("Your current request couldn't be processed. Check the valid syntax via `/help` or try again later.")
+    
+    #except:
+     # await ctx.channel.send("Your current request couldn't be processed. Check the valid syntax via `/help` or try again later.")
 
     
     
